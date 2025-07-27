@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Tools Directory</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f9f9f9; }
+    h1 { text-align: center; }
+    .search-bar, .filters { text-align: center; margin: 10px 0; }
+    .card { background: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin: 10px; width: 300px; }
+    .grid { display: flex; flex-wrap: wrap; justify-content: center; }
+    .badge { background: gold; color: black; padding: 3px 8px; border-radius: 5px; font-size: 12px; }
+    select, input { padding: 8px; border-radius: 5px; margin: 0 5px; }
+    a.button { background: royalblue; color: white; padding: 6px 12px; text-decoration: none; border-radius: 5px; display: inline-block; margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+  <h1>Find the Best AI Tools 🔍</h1>
+
+  <div class="search-bar">
+    <input type="text" id="search" placeholder="Search tools..." oninput="filterTools()">
+    <select id="category" onchange="filterTools()">
+      <option value="All">All Categories</option>
+    </select>
+  </div>
+
+  <div class="grid" id="toolList"></div>
+
+  <script>
+    const tools = [
+      { name: "ChatGPT", category: "Writing", desc: "AI chatbot for writing, research, and Q&A.", link: "https://chat.openai.com", popular: true },
+      { name: "Copy.ai", category: "Writing", desc: "Creates blogs, emails, and ads using AI.", link: "https://copy.ai", popular: true },
+      { name: "Jasper", category: "Writing", desc: "AI copywriter for marketing and storytelling.", link: "https://jasper.ai", popular: true },
+      { name: "Grammarly", category: "Writing", desc: "Fix grammar and improve your writing tone.", link: "https://grammarly.com", popular: true },
+      { name: "Notion AI", category: "Productivity", desc: "Write notes and docs faster with Notion AI.", link: "https://www.notion.so/product/ai", popular: true },
+      { name: "Looka", category: "Design", desc: "Design logos using AI, no experience needed.", link: "https://looka.com", popular: false },
+      { name: "Canva AI", category: "Design", desc: "Generate presentations and images using AI.", link: "https://www.canva.com/ai-image-generator/", popular: true },
+      { name: "Runway ML", category: "Video Editing", desc: "Edit videos and remove backgrounds with AI.", link: "https://runwayml.com", popular: true },
+      { name: "Pictory", category: "Video Editing", desc: "Turn text into videos automatically.", link: "https://pictory.ai", popular: false },
+      { name: "Descript", category: "Video Editing", desc: "Edit videos by editing text transcripts.", link: "https://www.descript.com", popular: true },
+      { name: "Codeium", category: "Coding", desc: "Free AI code completion for developers.", link: "https://codeium.com", popular: true },
+      { name: "GitHub Copilot", category: "Coding", desc: "AI code suggestions inside your editor.", link: "https://github.com/features/copilot", popular: true },
+      { name: "Synthesia", category: "Video Editing", desc: "Create AI talking head videos in minutes.", link: "https://www.synthesia.io", popular: false },
+      { name: "Beautiful.ai", category: "Productivity", desc: "Create smart presentations quickly.", link: "https://www.beautiful.ai", popular: false },
+      { name: "Durable", category: "Website Builder", desc: "Make AI-generated websites instantly.", link: "https://durable.co", popular: true },
+      { name: "Murf.ai", category: "Voice", desc: "AI voiceover and text-to-speech studio.", link: "https://murf.ai", popular: false },
+      { name: "Fireflies", category: "Productivity", desc: "AI meeting assistant that records and summarizes.", link: "https://fireflies.ai", popular: false }
+    ];
+
+    const categories = [...new Set(tools.map(t => t.category))];
+    const categorySelect = document.getElementById('category');
+    categories.forEach(cat => {
+      let opt = document.createElement('option');
+      opt.value = cat;
+      opt.textContent = cat;
+      categorySelect.appendChild(opt);
+    });
+
+    function filterTools() {
+      const searchVal = document.getElementById('search').value.toLowerCase();
+      const catVal = document.getElementById('category').value;
+      const container = document.getElementById('toolList');
+      container.innerHTML = '';
+
+      let filtered = tools
+        .filter(t => t.name.toLowerCase().includes(searchVal) || t.desc.toLowerCase().includes(searchVal))
+        .filter(t => catVal === "All" || t.category === catVal)
+        .sort((a, b) => (b.popular === true) - (a.popular === true));
+
+      filtered.forEach(t => {
+        let card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `<h3>${t.name} ${t.popular ? '<span class="badge">Popular</span>' : ''}</h3>
+                          <p>${t.desc}</p>
+                          <small>Category: ${t.category}</small><br>
+                          <a class="button" href="${t.link}" target="_blank">Visit Site</a>`;
+        container.appendChild(card);
+      });
+    }
+
+    filterTools();
+  </script>
+
+</body>
+</html>
